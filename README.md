@@ -1,7 +1,7 @@
 vim-emoji-complete
 ==================
 A VIM plug-in for insert completion of emoji.
-
+![vim-emoji-demo](http://i.imgur.com/FWPR9Ry.png)
 How to use
 ----------
 Press keys `<C-X><C-E>` in insert mode.
