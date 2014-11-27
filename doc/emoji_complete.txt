@@ -1,0 +1,45 @@
+*emoji_complete.txt*  vim-emoji-complete
+
+===============================================================================
+Contents ~
+
+ 1. Introduction                                  |emoji_complete-introduction|
+ 2. How to use                                      |emoji_complete-how-to-use|
+ 3. LICENSE                                            |emoji_complete-license|
+ 4. References                                      |emoji_complete-references|
+
+===============================================================================
+                                                  *emoji_complete-introduction*
+Introduction ~
+
+A VIM plug-in for insert completion of emoji.
+
+===============================================================================
+                                                    *emoji_complete-how-to-use*
+How to use ~
+
+Press keys '<C-X><C-E>' in insert mode.
+
+If you don't want it to overwrite standard key mappings, you can set your
+favorite key mappings.
+>
+  let g:emoji_complete_overwrite_standard_keymaps = 0
+  imap YOUR_FAVORITE_KEY_MAPPING <Plug>(emoji-start-complete)
+<
+===============================================================================
+                                                       *emoji_complete-license*
+LICENSE ~
+
+See LICENSE.
+
+This plug-in use json data (emoji.json) taken from gemoji [1]. The project is
+licensed under the LICENSE [2].
+
+===============================================================================
+                                                    *emoji_complete-references*
+References ~
+
+[1] https://github.com/github/gemoji
+[2] https://github.com/github/gemoji/blob/master/LICENSE
+
+vim: ft=help

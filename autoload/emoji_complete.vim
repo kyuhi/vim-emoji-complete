@@ -49,7 +49,6 @@ func! emoji_complete#complete()
   return ""
 endfunc
 
-
 func! s:emoji_expand()
   augroup emoji_complete_done 
     au!
