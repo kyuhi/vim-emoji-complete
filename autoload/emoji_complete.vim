@@ -14,15 +14,17 @@ func! s:init_emojis_once()
     if !has_key( emoji, 'emoji' )
       continue
     endif
-    call add( s:emojis, s:emoji_to_candidate( emoji ) )
+    for alias in emoji['aliases']
+      call add( s:emojis, s:emoji_to_candidate( emoji, alias ) )
+    endfor
   endfor
   let s:emoji_inited = 1
 endfunc
 
-func! s:emoji_to_candidate( emoji )
+func! s:emoji_to_candidate( emoji, alias )
   return {
   \ 'emoji' : a:emoji['emoji'],
-  \ 'word' : a:emoji['aliases'][0],
+  \ 'word' : a:alias,
   \ 'kind' : a:emoji['emoji'] . ' ',
   \ 'menu' : a:emoji['description'],
   \ 'icase' : 1,
@@ -36,21 +38,29 @@ func! emoji_complete#complete()
     return ""
   endif
   call s:init_emojis_once()
-  let line = getline('.')[ : col('.')-1]
-  let s:complete_start = match(line, '\w*$')
+  " The text from the beginning of the line up until before the cursor.
+  let line = getline('.')[ : col('.')-2]
+  let s:complete_start = match(line, '\(-1\|+1\|[-a-zA-Z0-9_]*\)$')
   if s:complete_start >= 0
     augroup emoji_complete_done
       au!
       au CompleteDone <buffer> call s:emoji_expand()
     augroup end
-    call complete( s:complete_start+1, s:emojis )
-    return "\<c-p>"
+    let prefix = line[s:complete_start : ]
+    let matches = []
+    for emoji in s:emojis
+      if emoji['word'] =~? '^' . prefix
+        call add( matches, emoji )
+      endif
+    endfor
+    call complete( s:complete_start+1, matches )
+    return ""
   endif
   return ""
 endfunc
 
 func! s:emoji_expand()
-  augroup emoji_complete_done 
+  augroup emoji_complete_done
     au!
   augroup end
   let line = getline('.')
