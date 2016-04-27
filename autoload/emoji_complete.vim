@@ -14,15 +14,17 @@ func! s:init_emojis_once()
     if !has_key( emoji, 'emoji' )
       continue
     endif
-    call add( s:emojis, s:emoji_to_candidate( emoji ) )
+    for alias in emoji['aliases']
+      call add( s:emojis, s:emoji_to_candidate( emoji, alias ) )
+    endfor
   endfor
   let s:emoji_inited = 1
 endfunc
 
-func! s:emoji_to_candidate( emoji )
+func! s:emoji_to_candidate( emoji, alias )
   return {
   \ 'emoji' : a:emoji['emoji'],
-  \ 'word' : a:emoji['aliases'][0],
+  \ 'word' : a:alias,
   \ 'kind' : a:emoji['emoji'] . ' ',
   \ 'menu' : a:emoji['description'],
   \ 'icase' : 1,
@@ -50,7 +52,7 @@ func! emoji_complete#complete()
 endfunc
 
 func! s:emoji_expand()
-  augroup emoji_complete_done 
+  augroup emoji_complete_done
     au!
   augroup end
   let line = getline('.')
